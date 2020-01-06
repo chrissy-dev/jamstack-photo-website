@@ -1,0 +1,54 @@
+---
+layout: "layouts/base.njk"
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+permalink: /tags/{{ tag | slug }}/
+---
+
+{% set taglist = collections[ tag ] %}
+
+<main>
+  <a href="/"><h1>JAMStack Photo site</h1></a>
+  <h2>An example site generated using exif data extracted from photos</h2>
+
+  {# This should be a ul :| #}
+  {% for tag in collections.tagList %}
+    {% set tagUrl %}/tags/{{ tag | slug }}/{% endset %}
+    <a href="{{ tagUrl | url }}" class="no-underline hover:underline font-normal text-gray-700">#{{ tag | slug }}</a>,
+  {% endfor %}
+
+  <h3>{{ taglist.length }} photos tagged: {{ tag }}</h3>
+
+  <ul>
+    {% for photo in taglist %}
+      {# Try and detect if the photo is portrait, useful for styling #}
+      {% set isPortrait = false %}
+        {% if photo.data.exif.PixelXDimension and photo.data.exif.PixelYDimension %}
+          {% if photo.data.exif.PixelXDimension < photo.data.exif.PixelYDimension %}
+          {% set isPortrait = true %}
+        {% endif %}
+      {% endif %}
+        <li>
+            <a href="{{ photo.url }}">
+              <figure>
+                  <noscript>
+                    <img alt="{{ photo.data.image.ImageDescription }}" src="/photos/w520/{{ photo.data.image_path }}">
+                  </noscript>
+                  <img class="lazy" src="/photos/blur/{{ photo.data.image_path }}" alt="{{ photo.data.image.ImageDescription }}" data-src="/photos/w520/{{ photo.data.image_path }}">
+                  <figcaption>
+                      <time>Photo taken {{ photo.data.exif.DateTimeOriginal | readableDate }}</time>
+                  </figcaption>
+              </figure>
+            </a>
+        </li>
+    {% endfor %}
+  </ul>
+
+  <footer>
+    <a href="https://www.chriscollins.me">Project by Chris Collins</a>
+  </footer>
+</main>
+
+

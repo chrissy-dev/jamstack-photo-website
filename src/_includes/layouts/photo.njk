@@ -1,0 +1,76 @@
+---
+layout: "layouts/base.njk"
+---
+
+{# 
+  Stolen from: https://github.com/duncan/website/blob/master/content/_includes/post.njk 
+  Thanks :)
+#}
+{%- set currentItemIndex = 0 %}
+{%- for item in collections.exifPhotos %}
+  {%- if item.url == page.url %}
+    {%- set currentItemIndex = loop.index0 %}
+  {%- endif %}
+{%- endfor %}
+
+{%- set prevItemIndex = currentItemIndex - 1 %}
+{%- set nextItemIndex = currentItemIndex + 1 %}
+
+<main>
+  <a href="/">Back to photos</a>
+
+  <h1>{{ image.ImageDescription }}</h1>
+  <time>{{ exif.DateTimeOriginal | readableDate }}</time>
+
+  <hr>
+
+  <figure>
+    <img src="/photos/w960/{{ image_path }}" alt="{{ image.ImageDescription }}">
+      <figcaption>
+        <p>Taken using a {{ image.Make }} {{ image.Model }} ISO: {{ exif.ISO }} <span class="lowercase">ƒ</span>/{{exif.FNumber }}</p>
+      </figcaption>
+  </figure>
+
+  <h2>Available meta tags</h2>
+  <p>Some stuff isn't usable and needs some work to become usable.</p>
+
+  <table>
+    <tr>
+      <th>Key</th>
+      <th>Value</th>
+    </tr>
+
+    {%- for name, item in image %}
+      <tr>
+        <td>image.{{ name }}</td>
+        <td>{{ item }}</td>
+      </tr>
+    {%- endfor %}
+
+    {%- for name, item in exif %}
+      <tr>
+        <td>exif.{{ name }}</td>
+        <td>{{ item }}</td>
+    </tr>
+    {%- endfor %}
+
+    {% for name, item in thumbnail %}
+      <tr>
+        <td>thumbnail.{{ name }}</td>
+        <td>{{ item }}</td>
+      </tr>
+    {%- endfor %}
+  </table>
+
+  <ul>
+    {%- if prevItemIndex >= 0 %}
+      {%- set prev = collections.exifPhotos[prevItemIndex] %}
+      <li><a href="{{ prev.url }}">Previous Photo</a></li>
+    {%- endif %}
+
+    {%- if nextItemIndex < collections.exifPhotos.length %}
+      {%- set next = collections.exifPhotos[nextItemIndex] %}
+      <li><a href="{{ next.url }}">Next Photo</a></li>
+    {%- endif %}
+  </ul>
+</main>

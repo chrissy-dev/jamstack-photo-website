@@ -1,0 +1,1 @@
+{"layout":"layouts/photo.njk","permalink":"photo/{{ exif.DateTimeOriginal | dateUrl }}/index.html"}

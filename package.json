@@ -1,0 +1,20 @@
+{
+  "name": "jamstack-photo-website",
+  "version": "0.0.1",
+  "description": "This is a proof-of concept workflow that extracts EXIF data embeded in photos to generate a static website using Eleventy",
+  "scripts": {
+    "start": "node node-exif-photos && ELEVENTY_ENV=development eleventy --serve --watch",
+    "build": "node node-exif-photos && del dist && ELEVENTY_ENV=production eleventy"
+  },
+  "author": "Chris Collins",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.10.0-beta.1",
+    "del-cli": "^3.0.0",
+    "fast-exif": "^1.0.1",
+    "fast-glob": "^3.1.1",
+    "jimp": "^0.9.3",
+    "luxon": "^1.21.3",
+    "node-iptc": "^1.0.5"
+  }
+}
